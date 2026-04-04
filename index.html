@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codex Tenebris Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#030303;
+      --panel:#090105;
+      --panel2:#130109;
+      --red:#ff1a1a;
+      --red2:#b30000;
+      --gold:#d8a11b;
+      --gold2:#f2c14e;
+      --text:#ead9b8;
+      --muted:#b38a6d;
+      --line:rgba(255,0,0,.22);
+      --glow:0 0 12px rgba(255,0,0,.32),0 0 28px rgba(255,0,0,.16);
+      --shadow:0 20px 50px rgba(0,0,0,.6);
+      --radius:22px;
+      --max:1240px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at top, rgba(120,0,0,.15), transparent 28%),
+        radial-gradient(circle at bottom, rgba(255,0,0,.08), transparent 34%),
+        linear-gradient(180deg,#020202 0%, #050006 40%, #020202 100%);
+      color:var(--text);
+      font-family:"Cormorant Garamond", serif;
+      overflow-x:hidden;
+      min-height:100vh;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255,0,0,.5) 0 1px, transparent 2px),
+        radial-gradient(circle at 82% 28%, rgba(255,80,0,.45) 0 1.2px, transparent 2px),
+        radial-gradient(circle at 38% 77%, rgba(255,0,0,.35) 0 1px, transparent 2px),
+        radial-gradient(circle at 64% 62%, rgba(255,160,0,.22) 0 1.1px, transparent 2px),
+        radial-gradient(circle at 24% 88%, rgba(255,0,0,.35) 0 1px, transparent 2px);
+      background-size: 280px 280px, 360px 360px, 300px 300px, 340px 340px, 260px 260px;
+      opacity:.9;
+      z-index:0;
+    }
+
+    .container{
+      width:min(var(--max), calc(100% - 28px));
+      margin:0 auto;
+      position:relative;
+      z-index:2;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter:blur(12px);
+      background:linear-gradient(180deg, rgba(20,0,8,.9), rgba(5,0,2,.8));
+      border-bottom:1px solid rgba(255,0,0,.16);
+      box-shadow:0 12px 30px rgba(0,0,0,.35);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:12px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--gold2);
+      letter-spacing:1px;
+      text-decoration:none;
+    }
+
+    .brand-name{
+      font-family:"UnifrakturCook", serif;
+      font-size:30px;
+      line-height:1;
+      text-shadow:0 0 8px rgba(255,0,0,.25);
+    }
+
+    .mini-pentacle{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      border:1px solid rgba(255,0,0,.45);
+      box-shadow:var(--glow);
+      position:relative;
+      flex:0 0 auto;
+    }
+    .mini-pentacle svg,
+    .sigil svg{width:100%;height:100%}
+
+    .nav-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      font-family:"Cinzel", serif;
+      font-size:13px;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+    }
+    .nav-links a{
+      color:#d2a67c;
+      text-decoration:none;
+      transition:.25s ease;
+    }
+    .nav-links a:hover{
+      color:var(--gold2);
+      text-shadow:0 0 10px rgba(255,0,0,.2);
+    }
+
+    .hero{
+      padding:64px 0 36px;
+      position:relative;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 14px;
+      border:1px solid rgba(255,0,0,.22);
+      background:rgba(30,0,8,.52);
+      color:var(--gold2);
+      border-radius:999px;
+      font-family:"Cinzel", serif;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      font-size:12px;
+      margin-bottom:18px;
+    }
+
+    h1,h2,h3,h4{
+      font-family:"Cinzel", serif;
+      margin:0;
+      letter-spacing:1px;
+    }
+
+    .hero h1{
+      font-size:clamp(40px,7vw,82px);
+      line-height:.96;
+      color:#d61b1b;
+      text-shadow:0 0 12px rgba(255,0,0,.15);
+      margin-bottom:16px;
+    }
+
+    .hero h1 .gold{color:var(--gold2)}
+    .hero h1 .gothic{
+      display:block;
+      font-family:"UnifrakturCook", serif;
+      font-size:.85em;
+      color:var(--gold2);
+      margin-bottom:12px;
+    }
+
+    .lead{
+      font-size:clamp(19px,2vw,24px);
+      line-height:1.72;
+      color:#e3caa5;
+      max-width:760px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:28px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:180px;
+      padding:14px 22px;
+      border:1px solid rgba(255,0,0,.45);
+      background:linear-gradient(180deg, rgba(50,0,10,.85), rgba(16,0,4,.95));
+      color:#f3c76a;
+      font-family:"Cinzel", serif;
+      font-size:14px;
+      letter-spacing:1.3px;
+      text-transform:uppercase;
+      text-decoration:none;
+      box-shadow:var(--glow);
+      transition:.25s ease;
+    }
+    .btn:hover{transform:translateY(-2px); border-color:rgba(255,50,50,.65)}
+    .btn.alt{
+      background:rgba(255,255,255,.02);
+      color:#d4a987;
+      box-shadow:none;
+    }
+
+    .hero-stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:28px;
+    }
+
+    .stat{
+      padding:18px;
+      border:1px solid rgba(255,0,0,.16);
+      background:linear-gradient(180deg, rgba(18,0,6,.9), rgba(6,0,3,.9));
+      box-shadow:var(--shadow);
+      min-height:120px;
+    }
+    .stat strong{
+      display:block;
+      color:var(--gold2);
+      font-family:"Cinzel", serif;
+      font-size:28px;
+      margin-bottom:8px;
+    }
+    .stat span{
+      color:#caa37e;
+      font-size:15px;
+      line-height:1.45;
+    }
+
+    .hero-visual{
+      position:relative;
+      min-height:620px;
+      border:1px solid rgba(255,0,0,.16);
+      background:
+        linear-gradient(180deg, rgba(18,0,4,.32), rgba(0,0,0,.72)),
+        radial-gradient(circle at center, rgba(255,0,0,.08), transparent 55%),
+        #050505;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+    }
+
+    .sigil-wrap{
+      position:relative;
+      width:min(460px, 82%);
+      aspect-ratio:1/1;
+      display:grid;
+      place-items:center;
+    }
+
+    .outer-ring{
+      position:absolute;
+      inset:0;
+      border-radius:50%;
+      border:3px solid rgba(255,0,0,.72);
+      box-shadow:0 0 12px rgba(255,0,0,.8), 0 0 40px rgba(255,0,0,.3), inset 0 0 20px rgba(255,0,0,.15);
+      animation: pulseRing 3.4s ease-in-out infinite;
+    }
+
+    .sigil{
+      position:absolute;
+      inset:11%;
+      animation: spinPentacle 24s linear infinite;
+      filter: drop-shadow(0 0 10px rgba(255,0,0,.95)) drop-shadow(0 0 24px rgba(255,0,0,.42));
+    }
+
+    .sigil svg line,
+    .mini-pentacle svg line{
+      stroke:#ff1d1d;
+      stroke-width:5;
+      stroke-linecap:round;
+    }
+
+    .sigil svg circle,
+    .mini-pentacle svg circle{
+      fill:none;
+      stroke:#ff1d1d;
+      stroke-width:2;
+    }
+
+    .orbit-text{
+      position:absolute;
+      bottom:40px;
+      left:32px;
+      right:32px;
+      text-align:center;
+      font-family:"Cinzel", serif;
+      text-transform:uppercase;
+      letter-spacing:2px;
+      color:var(--gold2);
+      font-size:12px;
+      line-height:1.9;
+    }
+
+    .hero-quote{
+      margin-top:14px;
+      color:#a77a62;
+      font-size:18px;
+      font-style:italic;
+    }
+
+    section{padding:38px 0}
+    .section-head{margin-bottom:24px}
+    .section-head h2{
+      font-size:clamp(30px,4vw,50px);
+      color:var(--gold2);
+      margin-bottom:10px;
+    }
+    .section-head p{
+      font-size:21px;
+      line-height:1.68;
+      color:#c79a77;
+      max-width:920px;
+    }
+
+    .grid-2,.grid-3,.grid-4{display:grid;gap:18px}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+
+    .card{
+      position:relative;
+      padding:24px;
+      border:1px solid rgba(255,0,0,.16);
+      background:
+        linear-gradient(180deg, rgba(20,0,8,.92), rgba(8,0,3,.96));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0 auto auto 0;
+      width:100%;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,0,0,.7), transparent);
+      opacity:.7;
+    }
+
+    .card h3{
+      font-size:22px;
+      color:#d9a61f;
+      margin-bottom:10px;
+    }
+    .card p, .card li{
+      font-size:18px;
+      line-height:1.72;
+      color:#dbbb98;
+    }
+
+    .tag{
+      display:inline-block;
+      padding:7px 12px;
+      border:1px solid rgba(255,0,0,.24);
+      background:rgba(40,0,7,.55);
+      color:#ff7878;
+      font-family:"Cinzel", serif;
+      font-size:11px;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      margin-bottom:14px;
+    }
+
+    .feature-icon{
+      width:58px;
+      height:58px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,0,0,.24);
+      box-shadow:var(--glow);
+      color:#ff2e2e;
+      font-size:26px;
+      margin-bottom:16px;
+      font-family:"Cinzel", serif;
+    }
+
+    .token-layout{
+      display:grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap:20px;
+      align-items:stretch;
+    }
+
+    .token-circle{
+      min-height:460px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,0,0,.16);
+      background:
+        radial-gradient(circle at center, rgba(255,0,0,.08), transparent 58%),
+        linear-gradient(180deg, rgba(18,0,7,.95), rgba(5,0,2,.95));
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .token-core{
+      position:relative;
+      width:310px;
+      height:310px;
+      border-radius:50%;
+      background:
+        radial-gradient(circle at center, rgba(255,0,0,.15), transparent 45%),
+        conic-gradient(from 0deg, #4d0000 0 15%, #d8a11b 15% 31%, #7f0909 31% 46%, #f0cb72 46% 63%, #5a0000 63% 82%, #c48714 82% 100%);
+      box-shadow:0 0 22px rgba(255,0,0,.35);
+      animation: spinPentacle 18s linear infinite reverse;
+    }
+    .token-core::before{
+      content:"CODEX\A TOKEN";
+      white-space:pre;
+      position:absolute;
+      inset:56px;
+      border-radius:50%;
+      background:#090205;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      font-family:"Cinzel", serif;
+      font-size:34px;
+      color:var(--gold2);
+      line-height:1.15;
+      border:1px solid rgba(255,0,0,.22);
+      box-shadow:inset 0 0 20px rgba(255,0,0,.08);
+    }
+
+    .list-clean{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:grid;
+      gap:12px;
+    }
+    .list-clean li{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      padding:14px 16px;
+      border:1px solid rgba(255,0,0,.12);
+      background:rgba(255,255,255,.02);
+    }
+    .list-clean strong{
+      color:var(--gold2);
+      font-family:"Cinzel", serif;
+      font-size:18px;
+    }
+
+    .media-card{padding:0;overflow:hidden}
+    .media-thumb{
+      aspect-ratio:16/10;
+      background:center/cover no-repeat;
+      position:relative;
+    }
+    .media-thumb::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.55));
+    }
+    .media-content{padding:18px 20px 22px}
+
+    .video-shell{
+      aspect-ratio:16/9;
+      border:1px solid rgba(255,0,0,.18);
+      background:#0b0205;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .video-shell iframe{width:100%;height:100%;border:0}
+
+    .team-card{padding:0;text-align:center;overflow:hidden}
+    .avatar{
+      width:100%;
+      aspect-ratio:1/1;
+      background:center/cover no-repeat;
+      border-bottom:1px solid rgba(255,0,0,.16);
+      filter:saturate(.7) contrast(1.04) brightness(.9);
+    }
+    .team-inner{padding:20px}
+    .role{
+      color:#ff6e6e;
+      font-family:"Cinzel", serif;
+      text-transform:uppercase;
+      letter-spacing:1.2px;
+      font-size:12px;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .timeline{display:grid;gap:16px}
+    .timeline-item{
+      display:grid;
+      grid-template-columns:110px 1fr;
+      gap:20px;
+      padding:20px;
+      border:1px solid rgba(255,0,0,.16);
+      background:linear-gradient(180deg, rgba(20,0,8,.9), rgba(8,0,3,.95));
+      box-shadow:var(--shadow);
+    }
+    .phase{
+      color:var(--gold2);
+      font-family:"Cinzel", serif;
+      text-transform:uppercase;
+      letter-spacing:1.3px;
+      font-size:13px;
+    }
+
+    .faq{display:grid;gap:14px}
+    .faq-item{
+      border:1px solid rgba(255,0,0,.16);
+      background:linear-gradient(180deg, rgba(18,0,6,.92), rgba(7,0,3,.95));
+      box-shadow:var(--shadow);
+    }
+    .faq-item summary{
+      list-style:none;
+      cursor:pointer;
+      padding:18px 20px;
+      font-family:"Cinzel", serif;
+      color:var(--gold2);
+      font-size:17px;
+    }
+    .faq-item summary::-webkit-details-marker{display:none}
+    .faq-item p{
+      margin:0;
+      padding:0 20px 20px;
+      font-size:18px;
+      line-height:1.72;
+      color:#d7b896;
+    }
+
+    .cta-box{
+      padding:32px;
+      border:1px solid rgba(255,0,0,.24);
+      background:
+        radial-gradient(circle at top right, rgba(255,0,0,.12), transparent 28%),
+        linear-gradient(180deg, rgba(22,0,8,.95), rgba(7,0,3,.98));
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+
+    footer{
+      padding:24px 0 34px;
+      border-top:1px solid rgba(255,0,0,.12);
+      color:#a77962;
+      font-size:16px;
+      position:relative;
+      z-index:2;
+    }
+    .footer-row{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    @keyframes spinPentacle{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+    @keyframes pulseRing{
+      0%,100%{transform:scale(1); opacity:.9}
+      50%{transform:scale(1.03); opacity:1}
+    }
+
+    @media (max-width:1080px){
+      .hero-grid,
+      .token-layout,
+      .grid-4,
+      .grid-3,
+      .grid-2{
+        grid-template-columns:1fr 1fr;
+      }
+      .hero-grid{grid-template-columns:1fr}
+      .hero-visual{min-height:460px}
+    }
+
+    @media (max-width:720px){
+      .nav{flex-direction:column; align-items:flex-start}
+      .nav-links{gap:12px}
+      .hero{padding-top:42px}
+      .grid-4,.grid-3,.grid-2,.token-layout,.hero-stats{grid-template-columns:1fr}
+      .timeline-item{grid-template-columns:1fr}
+      .hero-visual{min-height:390px}
+      .orbit-text{left:18px; right:18px; bottom:18px}
+      .cta-box{padding:24px}
+      .brand-name{font-size:24px}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#home">
+        <span class="mini-pentacle">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="44"></circle>
+            <line x1="50" y1="8" x2="88" y2="78"></line>
+            <line x1="88" y1="78" x2="10" y2="35"></line>
+            <line x1="10" y1="35" x2="90" y2="35"></line>
+            <line x1="90" y1="35" x2="12" y2="78"></line>
+            <line x1="12" y1="78" x2="50" y2="8"></line>
+          </svg>
+        </span>
+        <span class="brand-name">Codex Tenebris</span>
+      </a>
+      <div class="nav-links">
+        <a href="#vision">Vision</a>
+        <a href="#ecosystem">Écosystème</a>
+        <a href="#token">Token</a>
+        <a href="#media">Médias</a>
+        <a href="#team">Équipe</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Projet officiel • Univers occulte • Présentation crypto</div>
+          <h1>
+            <span class="gothic">Codex Tenebris</span>
+            Le projet <span class="gold">entre dans l’ombre</span>
+          </h1>
+          <p class="lead">
+            Ce site présente la dimension publique du projet : identité, vision, communauté, structure,
+            médias, feuille de route et future base crypto. L’objectif est de construire une image forte,
+            cohérente et rassurante avant toute étape de lancement.
+          </p>
+          <div class="hero-quote">
+            « Ce qui fut écrit dans les ténèbres renaît à la lueur du feu. »
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn" href="#token">Découvrir le token</a>
+            <a class="btn alt" href="#media">Voir les visuels</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>1 univers</strong>
+              <span>Une identité gothique, rouge, or et ésotérique immédiatement reconnaissable.</span>
+            </div>
+            <div class="stat">
+              <strong>1 projet</strong>
+              <span>Une marque structurée pour gagner en crédibilité avant le lancement public.</span>
+            </div>
+            <div class="stat">
+              <strong>1 token</strong>
+              <span>Une future base économique pensée pour soutenir l’écosystème Codex.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="sigil-wrap">
+            <div class="outer-ring"></div>
+            <div class="sigil">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="44"></circle>
+                <line x1="50" y1="8" x2="88" y2="78"></line>
+                <line x1="88" y1="78" x2="10" y2="35"></line>
+                <line x1="10" y1="35" x2="90" y2="35"></line>
+                <line x1="90" y1="35" x2="12" y2="78"></line>
+                <line x1="12" y1="78" x2="50" y2="8"></line>
+              </svg>
+            </div>
+          </div>
+          <div class="orbit-text">
+            Bienvenue dans l’architecture du projet • Site officiel • Communauté • Roadmap • Token • Univers
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="vision">
+      <div class="container">
+        <div class="section-head">
+          <h2>Une vision plus forte qu’un simple token</h2>
+          <p>
+            Codex Tenebris est pensé comme un projet de marque avant d’être une simple création crypto.
+            L’ambition est de bâtir une présence premium, un imaginaire puissant, une communauté fidèle
+            et une économie future cohérente avec cet univers.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="feature-icon">✢</div>
+            <h3>Identité gothique</h3>
+            <p>Un style visuel fort, inspiré des grimoires, du symbolisme, de la pénombre, des braises et des sceaux interdits.</p>
+          </article>
+          <article class="card">
+            <div class="feature-icon">✠</div>
+            <h3>Communauté d’initiés</h3>
+            <p>Le projet doit d’abord rassembler une audience convaincue par la narration, le design et la cohérence de l’ensemble.</p>
+          </article>
+          <article class="card">
+            <div class="feature-icon">⛧</div>
+            <h3>Fondation crypto</h3>
+            <p>Le futur token sert de pilier économique, avec des usages, des accès, des avantages et une logique d’écosystème.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="ecosystem">
+      <div class="container">
+        <div class="section-head">
+          <h2>Architecture du projet</h2>
+          <p>
+            Cette vitrine a pour rôle de rassurer les visiteurs et futurs investisseurs : elle montre un projet cadré,
+            lisible et sérieux, avec une identité, une équipe, des médias, une roadmap et une intention claire.
+          </p>
+        </div>
+
+        <div class="grid-4">
+          <article class="card">
+            <span class="tag">Présence</span>
+            <h3>Site officiel</h3>
+            <p>La base de confiance du projet : présentation, narration, valeurs, tokenomics, roadmap et crédibilité publique.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Social</span>
+            <h3>X & Telegram</h3>
+            <p>Les canaux de diffusion servent à construire la communauté, publier les annonces et maintenir l’activité du projet.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Image</span>
+            <h3>Branding visuel</h3>
+            <p>Le style rouge, noir et or alimente l’aura du projet et lui donne une signature immédiatement mémorable.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Crypto</span>
+            <h3>Base tokenisée</h3>
+            <p>La dimension blockchain vient renforcer l’écosystème, pas le remplacer. La forme doit soutenir le fond.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="token">
+      <div class="container">
+        <div class="section-head">
+          <h2>Le futur token du Codex</h2>
+          <p>
+            Cette partie sert de maquette visuelle et stratégique. Elle permet de présenter une logique économique claire
+            avant la mise en place finale de la tokenomics réelle du projet.
+          </p>
+        </div>
+
+        <div class="token-layout">
+          <div class="token-circle">
+            <div class="token-core"></div>
+          </div>
+
+          <div class="card">
+            <h3>Répartition visuelle de travail</h3>
+            <ul class="list-clean">
+              <li><span>Communauté & expansion</span><strong>20%</strong></li>
+              <li><span>Liquidité de lancement</span><strong>15%</strong></li>
+              <li><span>Développement du projet</span><strong>20%</strong></li>
+              <li><span>Marketing & visibilité</span><strong>15%</strong></li>
+              <li><span>Réserves écosystème</span><strong>20%</strong></li>
+              <li><span>Équipe verrouillée</span><strong>10%</strong></li>
+            </ul>
+            <p style="margin-top:16px;">
+              Utilités possibles : accès spéciaux, récompenses communautaires, participation aux événements,
+              mécanismes exclusifs, privilèges de statut et intégration à l’univers officiel du Codex.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="media">
+      <div class="container">
+        <div class="section-head">
+          <h2>Visuels, atmosphère et vidéos</h2>
+          <p>
+            Cette section sert à montrer la puissance d’ambiance du projet. Elle peut accueillir tes vraies images,
+            tes teasers vidéo, tes captures et plus tard les médias officiels du lancement.
+          </p>
+        </div>
+
+        <div class="grid-3" style="margin-bottom:18px;">
+          <article class="card media-card">
+            <div class="media-thumb" style="background-image:url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="media-content">
+              <h3>Atmosphère sombre</h3>
+              <p>Un projet qui assume un imaginaire fort, cérémoniel et immédiatement identifiable.</p>
+            </div>
+          </article>
+          <article class="card media-card">
+            <div class="media-thumb" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="media-content">
+              <h3>Narration visuelle</h3>
+              <p>Le design n’est pas décoratif : il participe directement à la confiance et à la perception du projet.</p>
+            </div>
+          </article>
+          <article class="card media-card">
+            <div class="media-thumb" style="background-image:url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="media-content">
+              <h3>Dimension Web3</h3>
+              <p>Une communication lisible, pensée pour préparer la présence publique et la future étape crypto.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="grid-2">
+          <div class="video-shell">
+            <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" title="Vidéo de présentation" allowfullscreen></iframe>
+          </div>
+          <div class="video-shell">
+            <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" title="Vidéo d’ambiance" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="team">
+      <div class="container">
+        <div class="section-head">
+          <h2>Le cercle fondateur</h2>
+          <p>
+            Une présentation d’équipe claire rassure immédiatement. Même si elle est réduite au départ,
+            elle donne un visage, une structure et une direction au projet.
+          </p>
+        </div>
+
+        <div class="grid-4">
+          <article class="card team-card">
+            <div class="avatar" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80');"></div>
+            <div class="team-inner">
+              <span class="role">Fondateur</span>
+              <h3>Project Lead</h3>
+              <p>Vision globale, cohérence du projet, identité centrale et direction stratégique du Codex.</p>
+            </div>
+          </article>
+          <article class="card team-card">
+            <div class="avatar" style="background-image:url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80');"></div>
+            <div class="team-inner">
+              <span class="role">Direction artistique</span>
+              <h3>Creative Director</h3>
+              <p>Supervision des visuels, de l’ambiance, du ton et de la cohérence esthétique du projet.</p>
+            </div>
+          </article>
+          <article class="card team-card">
+            <div class="avatar" style="background-image:url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=80');"></div>
+            <div class="team-inner">
+              <span class="role">Technique</span>
+              <h3>Blockchain & Ops</h3>
+              <p>Déploiement, infrastructure, sécurité opérationnelle et future structure du token.</p>
+            </div>
+          </article>
+          <article class="card team-card">
+            <div class="avatar" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=900&q=80');"></div>
+            <div class="team-inner">
+              <span class="role">Communauté</span>
+              <h3>Community Manager</h3>
+              <p>Animation des réseaux, annonces, contact public et croissance de l’audience autour du Codex.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="roadmap">
+      <div class="container">
+        <div class="section-head">
+          <h2>Le chemin d’invocation</h2>
+          <p>
+            La roadmap doit montrer une montée progressive et crédible : d’abord l’image et la communauté,
+            ensuite la structure crypto et enfin l’expansion complète de l’écosystème.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <article class="timeline-item">
+            <div class="phase">Phase I</div>
+            <div>
+              <h3>Fondations publiques</h3>
+              <p>Finalisation du site, du branding, des textes, des premiers médias et ouverture des canaux sociaux officiels.</p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="phase">Phase II</div>
+            <div>
+              <h3>Construction de la communauté</h3>
+              <p>Publication régulière sur X, croissance du Telegram, diffusion des teasers et installation du récit autour du projet.</p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="phase">Phase III</div>
+            <div>
+              <h3>Préparation crypto</h3>
+              <p>Affinage de la tokenomics, clarification des utilités, présentation publique de la structure de lancement et des objectifs.</p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="phase">Phase IV</div>
+            <div>
+              <h3>Expansion de l’écosystème</h3>
+              <p>Déploiement progressif des usages, intégrations, avantages communautaires et consolidation durable du projet.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-head">
+          <h2>Questions des visiteurs</h2>
+          <p>
+            Une FAQ simple et claire aide à structurer la confiance et à répondre immédiatement aux premiers doutes.
+          </p>
+        </div>
+
+        <div class="faq">
+          <details class="faq-item" open>
+            <summary>Qu’est-ce que Codex Tenebris Project ?</summary>
+            <p>Une vitrine officielle du projet, pensée pour présenter l’univers, l’équipe, la vision et la future base crypto du Codex.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Le token est-il déjà lancé ?</summary>
+            <p>Pas encore. Cette version sert à préparer la présence publique, la crédibilité et la structure du futur lancement.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Pourquoi un site séparé du Codex lui-même ?</summary>
+            <p>Parce qu’un projet crypto a besoin d’une vitrine dédiée, plus explicative, plus institutionnelle et plus rassurante pour les investisseurs.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Que faudra-t-il ajouter ensuite ?</summary>
+            <p>Les vrais liens X et Telegram, le logo officiel, les vrais médias, la vraie équipe, les détails tokenomics et les informations de lancement.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta-box">
+          <h2>Le Codex prend forme dans l’ombre</h2>
+          <p style="font-size:21px; line-height:1.75; color:#d7b18a; max-width:860px; margin:12px auto 0;">
+            Cette version reprend l’esthétique de ton univers : lettrages gothiques, noir profond,
+            rouge infernal, or ancien et pentacle rouge tournant. Elle sert de base solide pour une future version encore plus poussée.
+          </p>
+          <div class="hero-actions" style="justify-content:center;">
+            <a class="btn" href="#home">Retour au sceau</a>
+            <a class="btn alt" href="#team">Voir l’équipe</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <span>© 2026 Codex Tenebris Project</span>
+      <span>Site de présentation du projet officiel</span>
+    </div>
+  </footer>
+</body>
+</html>
